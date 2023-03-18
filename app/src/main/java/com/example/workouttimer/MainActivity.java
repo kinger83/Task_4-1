@@ -27,7 +27,6 @@ public class MainActivity extends AppCompatActivity {
         EditText setsText = findViewById(R.id.editTextSetsNumber);
         EditText workoutText = findViewById(R.id.editTextWorkoutTimeNumber);
         EditText restText = findViewById(R.id.editTextRestTimeNumber);
-        Button startEndBtn = findViewById(R.id.btnBeginWorkout);
         int setCountInput = -1;
         int workOutTimeInput = -1;
         int restTimeInput = -1;
@@ -36,6 +35,11 @@ public class MainActivity extends AppCompatActivity {
         setCountInput = getSetValue(setsText);
         workOutTimeInput = getWorkoutTimeValue(workoutText);
         restTimeInput = getRestTimeValue(restText);
+
+        if(setCountInput >0 && workOutTimeInput >0 && restTimeInput >0){
+            Toast testToast = Toast.makeText(getApplicationContext(), "Swap activity", Toast.LENGTH_SHORT);
+            testToast.show();
+        }
 
 
 
