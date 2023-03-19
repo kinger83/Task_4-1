@@ -2,6 +2,7 @@ package com.example.workouttimer;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -37,8 +38,15 @@ public class MainActivity extends AppCompatActivity {
         restTimeInput = getRestTimeValue(restText);
 
         if(setCountInput >0 && workOutTimeInput >0 && restTimeInput >0){
-            Toast testToast = Toast.makeText(getApplicationContext(), "Swap activity", Toast.LENGTH_SHORT);
-            testToast.show();
+
+            Intent intent = new Intent(this, WorkOutActivity.class);
+            intent.putExtra("sets", setCountInput);
+            intent.putExtra("workout", workOutTimeInput);
+            intent.putExtra("rest", restTimeInput);
+            startActivity(intent);
+
+            //            Toast testToast = Toast.makeText(getApplicationContext(), "Swap activity", Toast.LENGTH_SHORT);
+//            testToast.show();
         }
 
 
