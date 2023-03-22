@@ -129,10 +129,12 @@ public class WorkOutActivity extends AppCompatActivity {
             if(paused == false) {
                 paused = true;
                 currTimer.cancel();
+                button.setText("Resume");
 
             }
             else{
                 paused = false;
+                button.setText("Pause");
                 currTimer.start();
             }
         }
