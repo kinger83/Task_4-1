@@ -21,6 +21,7 @@ public class WorkOutActivity extends AppCompatActivity {
     int remainingSets = -1;
     public Boolean workoutRunning = false;
     public CountDownTimer currTimer = null;
+    Boolean paused = false;
     //int remainWorkoutTime = totWorkoutTime;
     //int remainingRestTime = totRestTime;
    // public boolean workoutStarted = false;
@@ -85,6 +86,7 @@ public class WorkOutActivity extends AppCompatActivity {
                 setsRemaining.setText(String.valueOf(remainingSets));
                 if(remainingSets > 0){
                     restRemaining.setText(String.valueOf(totRestTime));
+                    workoutRunning = false;
                     workout(view);
                 }
                 else{
@@ -115,9 +117,25 @@ public class WorkOutActivity extends AppCompatActivity {
 
             }
         };
-        workoutTimer.start();
-        setCurrentTimer(workoutTimer);
-        button.setText("Pause");
+        if(workoutRunning == false) {
+            workoutTimer.start();
+            setCurrentTimer(workoutTimer);
+            button.setText("Pause");
+            workoutRunning = true;
+
+        }
+        else{
+
+            if(paused == false) {
+                paused = true;
+                currTimer.cancel();
+
+            }
+            else{
+                paused = false;
+                currTimer.start();
+            }
+        }
 
 
     }
