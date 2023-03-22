@@ -125,9 +125,16 @@ public class WorkOutActivity extends AppCompatActivity {
 
         }
         else{
+            long time = -1;
 
             if(paused == false) {
                 paused = true;
+                if(currTimer == workoutTimer){
+                    time = Long.parseLong(workoutRemaining.getText().toString());
+                }else{
+                    time = Long.parseLong(restRemaining.getText().toString());
+                }
+
                 currTimer.cancel();
                 button.setText("Resume");
 
@@ -136,6 +143,7 @@ public class WorkOutActivity extends AppCompatActivity {
                 paused = false;
                 button.setText("Pause");
                 currTimer.start();
+                currTimer.onTick(time);
             }
         }
 
