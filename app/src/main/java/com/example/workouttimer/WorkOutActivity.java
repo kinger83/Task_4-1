@@ -19,6 +19,8 @@ public class WorkOutActivity extends AppCompatActivity {
     public int totRestTime = 20;
 
     int remainingSets = -1;
+    public Boolean workoutRunning = false;
+    public CountDownTimer currTimer = null;
     //int remainWorkoutTime = totWorkoutTime;
     //int remainingRestTime = totRestTime;
    // public boolean workoutStarted = false;
@@ -65,6 +67,8 @@ public class WorkOutActivity extends AppCompatActivity {
         TextView setsRemaining = findViewById(R.id.activeSetsVal);
         TextView workoutRemaining = findViewById(R.id.activeWorkoutValue);
         TextView restRemaining = findViewById(R.id.activeRestValue);
+        Button button = (Button) view;
+
 
 
         CountDownTimer restTimer = new CountDownTimer((totRestTime * 1000L), 1) {
@@ -106,18 +110,25 @@ public class WorkOutActivity extends AppCompatActivity {
             @Override
             public void onFinish() {
                 workoutRemaining.setText(String.valueOf(totWorkoutTime));
+                setCurrentTimer(restTimer);
                 restTimer.start();
 
             }
         };
         workoutTimer.start();
+        setCurrentTimer(workoutTimer);
+        button.setText("Pause");
 
 
     }
 
-    public void returnToMain(){
+    private void returnToMain(){
         Intent intent = new Intent(this, MainActivity.class);
         startActivity(intent);
+    }
+
+    private void setCurrentTimer(CountDownTimer curTimer){
+        currTimer = curTimer;
     }
 
 } // end class
