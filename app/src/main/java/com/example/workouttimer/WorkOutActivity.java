@@ -19,9 +19,9 @@ public class WorkOutActivity extends AppCompatActivity {
     public int totRestTime = 20;
 
     int remainingSets = -1;
-    int remainWorkoutTime = totWorkoutTime;
-    int remainingRestTime = totRestTime;
-    public boolean workoutStarted = false;
+    //int remainWorkoutTime = totWorkoutTime;
+    //int remainingRestTime = totRestTime;
+   // public boolean workoutStarted = false;
 
 
     @Override
@@ -62,34 +62,62 @@ public class WorkOutActivity extends AppCompatActivity {
     public void workout(View view) {
 
         // declare variables
-        Button btn = findViewById(R.id.btnBeginWorkout);
         TextView setsRemaining = findViewById(R.id.activeSetsVal);
         TextView workoutRemaining = findViewById(R.id.activeWorkoutValue);
         TextView restRemaining = findViewById(R.id.activeRestValue);
 
-//        for (int i = 0; i < remainingSets; i++) {
-//
-//            Toast testToast = Toast.makeText(getApplicationContext(), "here", Toast.LENGTH_SHORT);
-//            testToast.show();
-//        }
 
-
-        CountDownTimer workoutTimer = new CountDownTimer((totWorkoutTime * 1000L), 1) {
+        CountDownTimer restTimer = new CountDownTimer((totRestTime * 1000L), 1) {
             @Override
             public void onTick(long millisUntilFinished) {
-                NumberFormat f = new DecimalFormat("00");
+                NumberFormat f = new DecimalFormat();
                 long sec = (millisUntilFinished / 1000);
-                //remainWorkoutTime -= (millisUntilFinished * 1000);
-                workoutRemaining.setText((f.format(sec)));
+                restRemaining.setText((f.format(sec)));
             }
 
             @Override
             public void onFinish() {
                 remainingSets--;
                 setsRemaining.setText(String.valueOf(remainingSets));
+                if(remainingSets > 0){
+                    restRemaining.setText(String.valueOf(totRestTime));
+                    workout(view);
+                }
+                else{
+                    restRemaining.setText(String.valueOf(totRestTime));
+                    remainingSets = totSets;
+                    setsRemaining.setText(String.valueOf(remainingSets));
+                }
+
 
             }
-        }.start();
+        };
+
+
+
+        CountDownTimer workoutTimer = new CountDownTimer((totWorkoutTime * 1000L), 1) {
+            @Override
+            public void onTick(long millisUntilFinished) {
+                NumberFormat f = new DecimalFormat();
+                long sec = (millisUntilFinished / 1000);
+                workoutRemaining.setText((f.format(sec)));
+            }
+
+            @Override
+            public void onFinish() {
+                workoutRemaining.setText(String.valueOf(totWorkoutTime));
+                restTimer.start();
+
+            }
+        };
+        workoutTimer.start();
+
+
+    }
+
+    public void returnToMain(){
+        Intent intent = new Intent(this, MainActivity.class);
+        startActivity(intent);
     }
 
 } // end class
