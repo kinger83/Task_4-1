@@ -72,7 +72,7 @@ public class WorkOutActivity extends AppCompatActivity {
 
 
 
-        CountDownTimer restTimer = new CountDownTimer((totRestTime * 1000L), 1) {
+        final CountDownTimer restTimer = new CountDownTimer((totRestTime * 1000L), 1) {
             @Override
             public void onTick(long millisUntilFinished) {
                 NumberFormat f = new DecimalFormat();
@@ -93,6 +93,8 @@ public class WorkOutActivity extends AppCompatActivity {
                     restRemaining.setText(String.valueOf(totRestTime));
                     remainingSets = totSets;
                     setsRemaining.setText(String.valueOf(remainingSets));
+                    button.setText("Start Workout");
+                    workoutRunning = false;
                 }
 
 
@@ -101,7 +103,7 @@ public class WorkOutActivity extends AppCompatActivity {
 
 
 
-        CountDownTimer workoutTimer = new CountDownTimer((totWorkoutTime * 1000L), 1) {
+        final CountDownTimer workoutTimer = new CountDownTimer((totWorkoutTime * 1000L), 1) {
             @Override
             public void onTick(long millisUntilFinished) {
                 NumberFormat f = new DecimalFormat();
@@ -125,25 +127,36 @@ public class WorkOutActivity extends AppCompatActivity {
 
         }
         else{
-            long time = -1;
 
             if(paused == false) {
                 paused = true;
-                if(currTimer == workoutTimer){
-                    time = Long.parseLong(workoutRemaining.getText().toString());
-                }else{
-                    time = Long.parseLong(restRemaining.getText().toString());
-                }
-
                 currTimer.cancel();
                 button.setText("Resume");
-
             }
             else{
+                long tempTotTime = -1;
                 paused = false;
                 button.setText("Pause");
-                currTimer.start();
-                currTimer.onTick(time);
+
+
+
+                if(currTimer == workoutTimer){
+                    tempTotTime = totWorkoutTime;
+                    totWorkoutTime = Integer.parseInt((workoutRemaining.getText().toString()));
+//                    currTimer = ;
+                    //totWorkoutTime = (int) tempTotTime;
+
+
+
+
+                }else{
+                    tempTotTime = totRestTime;
+                    totRestTime = Integer.parseInt((restRemaining.getText().toString()));
+                    currTimer.start();
+                    totRestTime = (int) tempTotTime;
+                }
+
+
             }
         }
 
