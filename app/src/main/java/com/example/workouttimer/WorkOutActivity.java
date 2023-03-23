@@ -1,14 +1,18 @@
 package com.example.workouttimer;
 
+import static android.media.AudioManager.STREAM_NOTIFICATION;
+
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
+import android.media.AudioManager;
+import android.media.SoundPool;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ProgressBar;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import java.text.DecimalFormat;
 import java.text.NumberFormat;
@@ -23,6 +27,7 @@ public class WorkOutActivity extends AppCompatActivity {
     public Boolean workoutRunning = false;
     public CountDownTimer currTimer = null;
     Boolean paused = false;
+
 
 
 // Set some variable from the intent
@@ -69,6 +74,8 @@ public class WorkOutActivity extends AppCompatActivity {
         TextView workoutRemaining = findViewById(R.id.activeWorkoutValue);
         TextView restRemaining = findViewById(R.id.activeRestValue);
         Button button = (Button) view;
+        ProgressBar progBar = findViewById(R.id.progressBar);
+
 
 
         // setup the workout timer - which loops with the rest timer below
@@ -80,6 +87,15 @@ public class WorkOutActivity extends AppCompatActivity {
                 NumberFormat f = new DecimalFormat();
                 long sec = (millisUntilFinished / 1000);
                 restRemaining.setText((f.format(sec)));
+                int progress = (int) (((totRestTime * 1000L) - millisUntilFinished) / ((totRestTime * 1000L) / 100));
+                progBar.setProgress(progress);
+
+                if (millisUntilFinished <= 5000) {
+                    if (millisUntilFinished % 1000 == 0) {
+                        //play beep here
+                    }
+                }
+
             }
 
             @Override
@@ -112,6 +128,14 @@ public class WorkOutActivity extends AppCompatActivity {
                 NumberFormat f = new DecimalFormat();
                 long sec = (millisUntilFinished / 1000);
                 workoutRemaining.setText((f.format(sec)));
+                int progress = (int) (((totWorkoutTime * 1000L) - millisUntilFinished) / ((totWorkoutTime * 1000L) / 100));
+                progBar.setProgress(progress);
+
+                if (millisUntilFinished <= 5000) {
+                    if (millisUntilFinished % 1000 == 0) {
+                        //play beep here
+                    }
+                }
             }
 
             @Override
@@ -165,7 +189,8 @@ public class WorkOutActivity extends AppCompatActivity {
 
     }
     // function wll be called to return to main activity
-    private void returnToMain(){
+    private void returnToMain(View view){
+        currTimer.cancel();
         Intent intent = new Intent(this, MainActivity.class);
         startActivity(intent);
     }

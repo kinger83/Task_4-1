@@ -205,5 +205,18 @@
         app:layout_constraintStart_toEndOf="@+id/activeSetsVal"
         app:layout_constraintTop_toBottomOf="@+id/textView9" />
 
+    <Button
+        android:id="@+id/homeBtn"
+        android:layout_width="66dp"
+        android:layout_height="30dp"
+        android:layout_marginTop="12dp"
+        android:onClick="returnToMain"
+        android:text="Home"
+        android:textSize="8sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.498"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/startBtb" />
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>
