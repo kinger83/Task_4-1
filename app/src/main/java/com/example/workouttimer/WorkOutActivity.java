@@ -14,6 +14,7 @@ import java.text.DecimalFormat;
 import java.text.NumberFormat;
 
 public class WorkOutActivity extends AppCompatActivity {
+    // Set class variables
     public int totSets = 4;
     public int totWorkoutTime = 20;
     public int totRestTime = 20;
@@ -22,11 +23,9 @@ public class WorkOutActivity extends AppCompatActivity {
     public Boolean workoutRunning = false;
     public CountDownTimer currTimer = null;
     Boolean paused = false;
-    //int remainWorkoutTime = totWorkoutTime;
-    //int remainingRestTime = totRestTime;
-   // public boolean workoutStarted = false;
 
 
+// Set some variable from the intent
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -38,6 +37,7 @@ public class WorkOutActivity extends AppCompatActivity {
         totRestTime = intent.getIntExtra("rest", 0);
     }
 
+    // set up and display correct values in the view
     @Override
     protected void onStart() {
         super.onStart();
@@ -61,7 +61,7 @@ public class WorkOutActivity extends AppCompatActivity {
         restRemaining.setText(String.valueOf(totRestTime));
     }
 
-
+// this function is called when user clicks start workout
     public void workout(View view) {
 
         // declare variables
@@ -71,10 +71,12 @@ public class WorkOutActivity extends AppCompatActivity {
         Button button = (Button) view;
 
 
-
+        // setup the workout timer - which loops with the rest timer below
         final CountDownTimer restTimer = new CountDownTimer((totRestTime * 1000L), 1) {
+
             @Override
             public void onTick(long millisUntilFinished) {
+                setCurrentTimer(this);
                 NumberFormat f = new DecimalFormat();
                 long sec = (millisUntilFinished / 1000);
                 restRemaining.setText((f.format(sec)));
@@ -102,10 +104,11 @@ public class WorkOutActivity extends AppCompatActivity {
         };
 
 
-
+//      Set up the rest timer which loops with the workout timer until sets finished
         final CountDownTimer workoutTimer = new CountDownTimer((totWorkoutTime * 1000L), 1) {
             @Override
             public void onTick(long millisUntilFinished) {
+                setCurrentTimer(this);
                 NumberFormat f = new DecimalFormat();
                 long sec = (millisUntilFinished / 1000);
                 workoutRemaining.setText((f.format(sec)));
@@ -114,46 +117,45 @@ public class WorkOutActivity extends AppCompatActivity {
             @Override
             public void onFinish() {
                 workoutRemaining.setText(String.valueOf(totWorkoutTime));
-                setCurrentTimer(restTimer);
                 restTimer.start();
 
             }
         };
+
+
+        // when start clicked, if not currently working out, this starts the work out
         if(workoutRunning == false) {
             workoutTimer.start();
-            setCurrentTimer(workoutTimer);
             button.setText("Pause");
             workoutRunning = true;
 
         }
+        // if work out is happening the button changes to a pause/resume button
         else{
-
+            // if not paused, this pauses workout
             if(paused == false) {
                 paused = true;
                 currTimer.cancel();
                 button.setText("Resume");
             }
+            // if it was paused this resumes the workout
             else{
                 long tempTotTime = -1;
                 paused = false;
                 button.setText("Pause");
 
 
-
+                // trying to set the resume value to the value that was remaining when workout paused
                 if(currTimer == workoutTimer){
                     tempTotTime = totWorkoutTime;
                     totWorkoutTime = Integer.parseInt((workoutRemaining.getText().toString()));
-//                    currTimer = ;
+                    currTimer.start();
                     //totWorkoutTime = (int) tempTotTime;
-
-
-
-
                 }else{
                     tempTotTime = totRestTime;
                     totRestTime = Integer.parseInt((restRemaining.getText().toString()));
                     currTimer.start();
-                    totRestTime = (int) tempTotTime;
+                    //totRestTime = (int) tempTotTime;
                 }
 
 
@@ -162,31 +164,15 @@ public class WorkOutActivity extends AppCompatActivity {
 
 
     }
-
+    // function wll be called to return to main activity
     private void returnToMain(){
         Intent intent = new Intent(this, MainActivity.class);
         startActivity(intent);
     }
 
+    //sets the current countdown timer to a variable for us to access.
     private void setCurrentTimer(CountDownTimer curTimer){
         currTimer = curTimer;
     }
 
 } // end class
-
-
-
-
-// Make button pause timer
-// update progress value
-// update progress display every second
-
-// -1 on remaining workout details
-
-
-// Make button pause timer
-// update progress value
-// update progress display every second
-
-
-// loop set count times
