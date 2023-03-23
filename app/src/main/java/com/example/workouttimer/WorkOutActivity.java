@@ -2,8 +2,11 @@ package com.example.workouttimer;
 
 import androidx.appcompat.app.AppCompatActivity;
 import android.content.Intent;
+import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.os.CountDownTimer;
+import android.os.VibrationEffect;
+import android.os.Vibrator;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -29,7 +32,8 @@ public class WorkOutActivity extends AppCompatActivity {
     TextView workoutRemaining = null;
     TextView restRemaining = null;
     ProgressBar progBar = null;
-
+    public Vibrator vibrator;
+    MediaPlayer mediaPlayer = null;
 
 
 // Set some variable from the intent
@@ -42,6 +46,8 @@ public class WorkOutActivity extends AppCompatActivity {
         remainingSets = totSets;
         totWorkoutTime = intent.getIntExtra("workout", 0);
         totRestTime = intent.getIntExtra("rest", 0);
+
+        vibrator = (Vibrator) getSystemService(VIBRATOR_SERVICE);
     }
 
     // set up and display correct values in the view
@@ -58,6 +64,7 @@ public class WorkOutActivity extends AppCompatActivity {
         setView.setText(setsString);
         workoutView.setText(workoutString);
         restView.setText(restString);
+        mediaPlayer = MediaPlayer.create(this, R.raw.beep);
 
 
         setsRemaining = findViewById(R.id.activeSetsVal);
@@ -160,7 +167,8 @@ public class WorkOutActivity extends AppCompatActivity {
 
                 if (millisUntilFinished <= 5000) {
                     if (millisUntilFinished % 1000 == 0) {
-                        //play beep here
+                        vibrator.vibrate(100);
+                        mediaPlayer.start();
                     }
                 }
             }
@@ -188,7 +196,8 @@ public class WorkOutActivity extends AppCompatActivity {
 
                 if (millisUntilFinished <= 5000) {
                     if (millisUntilFinished % 1000 == 0) {
-                        //play beep here
+                        vibrator.vibrate(100);
+                        mediaPlayer.start();
                     }
                 }
         }
