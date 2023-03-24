@@ -3,6 +3,7 @@ package com.example.workouttimer;
 import androidx.appcompat.app.AppCompatActivity;
 import android.content.Intent;
 import android.media.MediaPlayer;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.os.VibrationEffect;
@@ -93,7 +94,6 @@ public class WorkOutActivity extends AppCompatActivity {
         else {
             // if not paused, this pauses workout
             if (paused == false) {
-                Log.v("checking", "false / true");
                 paused = true;
                 currTimer.cancel();
 
@@ -165,9 +165,30 @@ public class WorkOutActivity extends AppCompatActivity {
                 int progress = (int) (((totWorkoutTime * 1000L) - millisUntilFinished) / ((totWorkoutTime * 1000L) / 100));
                 progBarToUpdate.setProgress(progress);
 
-                if (millisUntilFinished <= 5000) {
-                    if (millisUntilFinished % 1000 == 0) {
-                        vibrator.vibrate(100);
+
+                // This code was not triggering as expected. So I trying to moe it to play
+                // when the disply values change
+//                if (millisUntilFinished <= 5000) {
+//                    if (millisUntilFinished % 1000 == 0) {
+//                        Log.v("<5 second check", "tick");
+//                        if(Build.VERSION.PREVIEW_SDK_INT < 26) {
+//                            vibrator.vibrate(100);
+//                        }else {
+//                            vibrator.vibrate(VibrationEffect.createOneShot(100, VibrationEffect.DEFAULT_AMPLITUDE));
+//                        }
+//                        mediaPlayer.start();
+//                    }
+//                }
+
+                if(Integer.valueOf( txtViewToUpdate.getText().toString()) <= 6){
+                    int tmp = 6;
+                    if(Integer.valueOf( txtViewToUpdate.getText().toString()) != tmp){
+                        tmp = Integer.valueOf( txtViewToUpdate.getText().toString());
+                        if(Build.VERSION.PREVIEW_SDK_INT < 26) {
+                            vibrator.vibrate(100);
+                        }else {
+                            vibrator.vibrate(VibrationEffect.createOneShot(100, VibrationEffect.DEFAULT_AMPLITUDE));
+                        }
                         mediaPlayer.start();
                     }
                 }
@@ -194,12 +215,25 @@ public class WorkOutActivity extends AppCompatActivity {
                 int progress = (int) (((totRestTime * 1000L) - millisUntilFinished) / ((totRestTime * 1000L) / 100));
                 progBarToUpdate.setProgress(progress);
 
-                if (millisUntilFinished <= 5000) {
-                    if (millisUntilFinished % 1000 == 0) {
+//                if (millisUntilFinished <= 5000) {
+//                    if (millisUntilFinished % 1000 == 0) {
+//                        vibrator.vibrate(100);
+//                        mediaPlayer.start();
+//                    }
+//                }
+
+            if(Integer.valueOf( txtViewToUpdate.getText().toString()) <= 6){
+                int tmp = 6;
+                if(Integer.valueOf( txtViewToUpdate.getText().toString()) != tmp){
+                    tmp = Integer.valueOf( txtViewToUpdate.getText().toString());
+                    if(Build.VERSION.PREVIEW_SDK_INT < 26) {
                         vibrator.vibrate(100);
-                        mediaPlayer.start();
+                    }else {
+                        vibrator.vibrate(VibrationEffect.createOneShot(100, VibrationEffect.DEFAULT_AMPLITUDE));
                     }
+                    mediaPlayer.start();
                 }
+            }
         }
 
         @Override
